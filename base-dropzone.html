@@ -15,7 +15,7 @@ Element providing solution to no problem in particular.
 @status alpha
 @homepage http://.github.io/base-dropzone
 -->
-<polymer-element name="base-dropzone" attributes="">
+<polymer-element name="base-dropzone" attributes="url">
   <template style="width: 400px;  height: 300px;">
     <link rel="stylesheet" href="../dropzone/dist/dropzone.css">
     <link rel="stylesheet" href="base-dropzone.css">
@@ -49,6 +49,7 @@ Element providing solution to no problem in particular.
     Polymer({
       
       hideProgressBar: true,
+      url: '',
 
       ready: function () {
         var self = this;
@@ -69,7 +70,7 @@ Element providing solution to no problem in particular.
           uploadMultiple: true,
           parallelUploads: 100,
           maxFiles: 100,
-          url: "http://localhost:8080/upload",
+          url: self.url,
 
           // The setting up of the dropzone
           init: function() {
