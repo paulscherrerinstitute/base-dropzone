@@ -1,0 +1,122 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
+<link rel="import" href="../polymer-fontawesome/polymer-fontawesome.html">
+<script src="../dropzone/dist/dropzone.js"></script>
+<!--
+Element providing solution to no problem in particular.
+
+##### Example
+
+    <base-dropzone></base-dropzone>
+
+@element base-dropzone
+@blurb Element providing solution to no problem in particular.
+@status alpha
+@homepage http://.github.io/base-dropzone
+-->
+<polymer-element name="base-dropzone" attributes="">
+  <template style="width: 400px;  height: 300px;">
+    <link rel="stylesheet" href="../dropzone/dist/dropzone.css">
+    <link rel="stylesheet" href="base-dropzone.css">
+    
+    <div vertical layout>
+      <div horizontal center-justified layout>
+        <form id='dropit'
+              class="dropzone"
+              enctype="multipart/form-data"
+              id="dropit">
+        </form>
+      </div>
+      <div horizontal layout center-justified hidden?='{{hideProgressBar}}'>
+        <paper-progress id='totalProgress' value="0"></paper-progress>
+      </div>
+      <div horizontal center-justified layout>
+        <paper-button id="submitAllBtn" raised role='button' tabindex='0'>
+          Upload&nbsp;
+          <font-awesome icon="upload" size="1x"></font-awesome>
+        </paper-button>
+        <paper-button id="clearDropzoneBtn" raised role='button' tabindex='0'>
+          Clear&nbsp;
+          <font-awesome icon="ban" size="1x"></font-awesome>
+        </paper-button>
+      </div>
+    </div>
+
+  </template>
+  <script>
+
+    Polymer({
+      
+      hideProgressBar: true,
+
+      ready: function () {
+        var self = this;
+        this.createDropzone();
+      },
+
+      createDropzone: function() {
+        var options = this.createDropzoneOptions();
+        new Dropzone(this.$.dropit, options);
+      },
+
+      createDropzoneOptions: function() {
+        var self = this;
+        return { // The camelized version of the ID of the form element
+
+          // The configuration we've talked about above
+          autoProcessQueue: false,
+          uploadMultiple: true,
+          parallelUploads: 100,
+          maxFiles: 100,
+          url: "http://localhost:8080/upload",
+
+          // The setting up of the dropzone
+          init: function() {
+            var dropit = this;
+
+            // First change the button to actually tell Dropzone to process the queue.
+            self.$.submitAllBtn.addEventListener("click", function(e) {
+              // Make sure that the form isn't actually being sent.
+              e.preventDefault();
+              e.stopPropagation();
+              dropit.processQueue();
+            });
+            
+            self.$.clearDropzoneBtn.addEventListener("click", function(e) {
+                // Using "_this" here, because "this" doesn't point to the dropzone anymore
+                dropit.removeAllFiles();
+                // If you want to cancel uploads as well, you
+                // could also call _this.removeAllFiles(true);
+            });
+
+            // Listen to the sendingmultiple event. In this case, it's the sendingmultiple event instead
+            // of the sending event because uploadMultiple is set to true.
+            this.on("sendingmultiple", function() {
+              // Gets triggered when the form is actually being sent.
+              // Hide the success button or the complete form.
+              self.hideProgressBar = false;
+            });
+            
+            this.on("totaluploadprogress", function(progress) {
+              self.$.totalProgress.value = progress;
+            });
+
+            this.on("successmultiple", function(files, response) {
+              // Gets triggered when the files have successfully been sent.
+              // Redirect user or notify of success.
+              console.log('Success multiple!');
+              setTimeout(function() {self.hideProgressBar = true; }, 500);
+            });
+            this.on("errormultiple", function(files, response) {
+              // Gets triggered when there was an error sending the files.
+              // Maybe show form again, and notify user of error
+              console.warn(response);
+            });
+          }
+        };
+      }
+
+    });
+  </script>
+</polymer-element>
