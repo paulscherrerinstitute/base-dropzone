@@ -15,7 +15,7 @@ Element providing solution to no problem in particular.
 @status alpha
 @homepage http://.github.io/base-dropzone
 -->
-<polymer-element name="base-dropzone" attributes="url">
+<polymer-element name="base-dropzone" attributes="url autoprocess">
   <template style="width: 400px;  height: 300px;">
     <link rel="stylesheet" href="../dropzone/dist/dropzone.css">
     <link rel="stylesheet" href="base-dropzone.css">
@@ -32,7 +32,7 @@ Element providing solution to no problem in particular.
         <paper-progress id='totalProgress' value="0"></paper-progress>
       </div>
       <div horizontal center-justified layout>
-        <paper-button id="submitAllBtn" raised role='button' tabindex='0'>
+        <paper-button id="submitAllBtn" hidden?='{{autoprocess}}' raised role='button' tabindex='0'>
           Upload&nbsp;
           <font-awesome icon="upload" size="1x"></font-awesome>
         </paper-button>
@@ -49,7 +49,10 @@ Element providing solution to no problem in particular.
     Polymer({
       
       hideProgressBar: true,
+      
       url: '',
+
+      autoprocess: false,
 
       ready: function () {
         var self = this;
@@ -66,7 +69,7 @@ Element providing solution to no problem in particular.
         return { // The camelized version of the ID of the form element
 
           // The configuration we've talked about above
-          autoProcessQueue: false,
+          autoProcessQueue: this.autoprocess,
           uploadMultiple: true,
           parallelUploads: 100,
           maxFiles: 100,
