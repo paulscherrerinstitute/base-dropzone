@@ -108,13 +108,13 @@ Element providing solution to no problem in particular.
               // Gets triggered when the files have successfully been sent.
               // Redirect user or notify of success.
               console.log('Success multiple!');
-              this.fire('dropzone-upload-success', response);
+              self.fire('dropzone-upload-success', response);
               setTimeout(function() {self.hideProgressBar = true; }, 500);
             });
             this.on("errormultiple", function(files, response) {
               // Gets triggered when there was an error sending the files.
               // Maybe show form again, and notify user of error
-              this.fire('dropzone-upload-failure', response);
+              self.fire('dropzone-upload-failure', response);
             });
           }
         };
