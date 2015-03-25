@@ -66,9 +66,7 @@ Element providing solution to no problem in particular.
 
       createDropzoneOptions: function() {
         var self = this;
-        return { // The camelized version of the ID of the form element
-
-          // The configuration we've talked about above
+        return {
           autoProcessQueue: this.autoprocess,
           uploadMultiple: true,
           parallelUploads: 100,
@@ -110,14 +108,18 @@ Element providing solution to no problem in particular.
             this.on("successmultiple", function(files, response) {
               // Gets triggered when the files have successfully been sent.
               // Redirect user or notify of success.
-              console.log('Success multiple!');
               self.fire('dropzone-upload-success', response);
               setTimeout(function() {self.hideProgressBar = true; }, 500);
             });
+
             this.on("errormultiple", function(files, response) {
               // Gets triggered when there was an error sending the files.
               // Maybe show form again, and notify user of error
               self.fire('dropzone-upload-failure', response);
+            });
+
+            this.on("maxfilesexceeded", function(files, response) {
+              self.fire('dropzone-maxfiles-exceeded', response);
             });
           }
         };
