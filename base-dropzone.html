@@ -15,7 +15,7 @@ Element providing solution to no problem in particular.
 @status alpha
 @homepage http://.github.io/base-dropzone
 -->
-<polymer-element name="base-dropzone" attributes="url autoprocess">
+<polymer-element name="base-dropzone" attributes="url autoprocess multiple">
   <template style="width: 400px;  height: 300px;">
     <link rel="stylesheet" href="../dropzone/dist/dropzone.css">
     <link rel="stylesheet" href="base-dropzone.css">
@@ -53,6 +53,8 @@ Element providing solution to no problem in particular.
       url: '',
 
       autoprocess: false,
+      
+      multiple: true,
 
       ready: function () {
         var self = this;
@@ -76,7 +78,7 @@ Element providing solution to no problem in particular.
         var self = this;
         return {
           autoProcessQueue: this.autoprocess,
-          uploadMultiple: true,
+          uploadMultiple: this.multiple,
           parallelUploads: 100,
           maxFiles: 100,
           url: self.url,
