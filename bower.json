@@ -8,13 +8,14 @@
   ],
   "main": "base-dropzone.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.5",
-    "paper-button": "Polymer/paper-button#~0.5.5",
-    "paper-progress": "Polymer/paper-progress#~0.5.5",
+    "polymer": "Polymer/polymer#^1.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0",
+    "paper-button": "PolymerElements/paper-button#~0.5.5",
+    "paper-progress": "PolymerElements/paper-progress#~0.5.5",
     "dropzone": "~4.0.1",
-    "font-awesome-polymer-icons": "~4.2.0-b2"
+    "font-awesome-polymer-icons": "~4.2"
   },
   "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^2.2.3"
+    "web-component-tester": "Polymer/web-component-tester#^3.3"
   }
 }

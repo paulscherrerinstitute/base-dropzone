@@ -1,7 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-progress/paper-progress.html">
-<link rel="import" href="../font-awesome-polymer-icons/fa-icons.html">
+<link rel="import" href="../fontawesome-iconset/fa-all.html">
 <script src="../dropzone/dist/dropzone.js"></script>
 <!--
 Element providing solution to no problem in particular.
@@ -15,30 +16,29 @@ Element providing solution to no problem in particular.
 @status alpha
 @homepage http://.github.io/base-dropzone
 -->
-<polymer-element name="base-dropzone" attributes="url autoprocess multiple">
+<dom-module id="base-dropzone">
   <template style="width: 400px;  height: 300px;">
     <link rel="stylesheet" href="../dropzone/dist/dropzone.css">
     <link rel="stylesheet" href="base-dropzone.css">
     
-    <div vertical layout>
-      <div horizontal center-justified layout>
-        <form id='dropit'
+    <div class='vertical layout'>
+      <div class='horizontal center-justified layout'>
+        <form id='dropitDropzoneId'
               class="dropzone"
-              enctype="multipart/form-data"
-              id="dropit">
+              enctype="multipart/form-data">
         </form>
       </div>
-      <div horizontal layout center-justified hidden?='{{hideProgressBar}}'>
+      <div class='horizontal layout center-justified' hidden?='{{hideProgressBar}}'>
         <paper-progress id='totalProgress' value="0"></paper-progress>
       </div>
-      <div horizontal center-justified layout>
+      <div class='horizontal center-justified layout'>
         <paper-button id="submitAllBtn" hidden?='{{autoprocess}}' raised role='button' tabindex='0'>
           Upload&nbsp;
-          <core-icon icon="fa:upload"></core-icon>
+          <iron-icon icon="fa:upload"></iron-icon>
         </paper-button>
         <paper-button id="clearDropzoneBtn" raised role='button' tabindex='0'>
           Clear&nbsp;
-          <core-icon icon="fa:ban"></core-icon>
+          <iron-icon icon="fa:ban"></iron-icon>
         </paper-button>
       </div>
     </div>
@@ -47,17 +47,17 @@ Element providing solution to no problem in particular.
   <script>
 
     Polymer({
-      
-      hideProgressBar: true,
-      
-      url: '',
+      id: 'base-dropzone',
 
-      autoprocess: false,
-      
-      multiple: true,
+      properties: {
+        url: {type: String, value: ''},
+        autoprocess: {type: Boolean, value: false},
+        multiple: {type: Boolean, value: true},
+        hideProgressBar: {type: Boolean, value: true},
+      },
 
+      
       ready: function () {
-        var self = this;
 
         if (this.url) {
           this.createDropzone();
@@ -70,8 +70,10 @@ Element providing solution to no problem in particular.
       },
 
       createDropzone: function() {
-        var options = this.createDropzoneOptions();
-        new Dropzone(this.$.dropit, options);
+        // set the options for element with id 'dropitDropzoneId'
+        Dropzone.autoDiscover = false;
+        var dropzoneOptions = this.createDropzoneOptions();
+        new Dropzone(this.$.dropitDropzoneId, dropzoneOptions);
       },
 
       createDropzoneOptions: function() {
@@ -140,4 +142,4 @@ Element providing solution to no problem in particular.
 
     });
   </script>
-</polymer-element>
+</dom-module>
