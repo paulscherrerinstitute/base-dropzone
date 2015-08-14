@@ -28,11 +28,13 @@ Element providing solution to no problem in particular.
               enctype="multipart/form-data">
         </form>
       </div>
-      <div class='horizontal layout center-justified' hidden?='{{hideProgressBar}}'>
+      
+      <div class='horizontal layout center-justified' hidden$='{{hideProgressBar}}'>
         <paper-progress id='totalProgress' value="0"></paper-progress>
       </div>
+
       <div class='horizontal center-justified layout'>
-        <paper-button id="submitAllBtn" hidden?='{{autoprocess}}' raised role='button' tabindex='0'>
+        <paper-button id="submitAllBtn" hidden$='{{autoProcess}}' raised role='button' tabindex='0'>
           Upload&nbsp;
           <iron-icon icon="fa:upload"></iron-icon>
         </paper-button>
@@ -47,13 +49,54 @@ Element providing solution to no problem in particular.
   <script>
 
     Polymer({
-      id: 'base-dropzone',
+      
+      is: 'base-dropzone',
 
       properties: {
-        url: {type: String, value: ''},
-        autoprocess: {type: Boolean, value: false},
-        multiple: {type: Boolean, value: true},
-        hideProgressBar: {type: Boolean, value: true},
+        
+        /**
+        * The URL of the backend used for uploading the files.
+        *
+        * @attribute url
+        * @type String
+        * @default ''
+        */
+        url: {
+          type: String,
+          value: ''
+        },
+        
+        /**
+        * When set to false, the 'upload' button has to be pressed 
+        * by the user in order to upload the dropped files.
+        *
+        * @attribute autoProcess
+        * @type Boolean
+        * @default false
+        */
+        autoProcess: {
+          type: Boolean, 
+          value: false
+        },
+
+        multiple: {
+          type: Boolean, 
+          value: true
+        },
+
+        /**
+        * If set to true, hides the progress bar above the buttons.
+        *
+        * @attribute hideProgressBar
+        * @type Boolean
+        * @default false
+        */
+        hideProgressBar: {
+          type: Boolean,
+          reflectToAttributes: true,
+          value: false
+        },
+
       },
 
       
@@ -79,7 +122,7 @@ Element providing solution to no problem in particular.
       createDropzoneOptions: function() {
         var self = this;
         return {
-          autoProcessQueue: this.autoprocess,
+          autoProcessQueue: this.autoProcess,
           uploadMultiple: this.multiple,
           parallelUploads: 100,
           maxFiles: 100,
