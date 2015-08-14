@@ -14,7 +14,7 @@
     "paper-button": "PolymerElements/paper-button#^1.0",
     "paper-progress": "PolymerElements/paper-progress#^1.0",
     "dropzone": "~4.0.1",
-    "fontawesome-iconset": "philya/font-awesome-polymer-icons#master"
+    "fontawesome-iconset": "diego-d5000/fontawesome-iconset#^4.3.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^3.3"
