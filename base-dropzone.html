@@ -1,9 +1,15 @@
 <link rel="import" href="../polymer/polymer.html">
+
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-progress/paper-progress.html">
+
+<link rel="import" href="../psi-external-deps/dependency-underscore.html">
+<link rel="import" href="../psi-external-deps/dependency-underscore-deep-extend.html">
 <script src="../dropzone/dist/dropzone.js"></script>
 <!--
 Element providing solution to no problem in particular.
@@ -18,53 +24,55 @@ Element providing solution to no problem in particular.
 @homepage http://.github.io/base-dropzone
 -->
 <dom-module id="base-dropzone">
-  <style is='custom-style'>
-    :host {
-      background: #E8E9EC;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
-    .dropzone .dz-preview.dz-success .dz-success-mark {
-      opacity: 1;
-      -webkit-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-      -moz-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-      -ms-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-      -o-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-      animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
-    }
-    .dropzone {
-      border: 2px dashed #0087F7;
-      background: white;
-      width: 60%;
-      border-radius: 5px;
-    }
-    .dropzone .dz-preview.dz-file-preview.dz-error.dz-complete .dz-image {
-      background-image: linear-gradient(to bottom, #d9534f 0, #c12e2a 100%);  /*background: linear-gradient(to top, rgba(255,0,0,0.2), rgba(255,0,0,1));*/
-    }
-    .dropzone .dz-preview.dz-file-preview.dz-success.dz-complete .dz-image {
-      background-image: linear-gradient(to bottom, #5cb85c 0, #419641 100%);    /*background: linear-gradient(to top, rgba(0,255,0,0.2), rgba(0,255,0,1));*/
-    }
-
-    .dropzone .dz-preview .dz-progress {
-      z-index: 9;
-    }
-    .dropzone .dz-preview:hover {
-      z-index: 9;
-    }
-    .dropzone .dz-preview .dz-details {
-      z-index: 9;
-    }
-    .dropzone .dz-preview .dz-image {
-      z-index: 9;
-    }
-    .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
-      z-index: 9;
-    }
-    .dropzone .dz-preview .dz-error-message {
-      z-index: 9;
-    }
-  </style>
 
   <template style="width: 400px;  height: 300px;">
+    
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+      :host {
+        background: #E8E9EC;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+      .dropzone .dz-preview.dz-success .dz-success-mark {
+        opacity: 1;
+        -webkit-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
+        -moz-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
+        -ms-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
+        -o-animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
+        animation: slide-in 3s cubic-bezier(0.77, 0, 0.175, 1);
+      }
+      .dropzone {
+        border: 2px dashed #0087F7;
+        background: white;
+        width: 60%;
+        border-radius: 5px;
+      }
+      .dropzone .dz-preview.dz-file-preview.dz-error.dz-complete .dz-image {
+        background-image: linear-gradient(to bottom, #d9534f 0, #c12e2a 100%);  /*background: linear-gradient(to top, rgba(255,0,0,0.2), rgba(255,0,0,1));*/
+      }
+      .dropzone .dz-preview.dz-file-preview.dz-success.dz-complete .dz-image {
+        background-image: linear-gradient(to bottom, #5cb85c 0, #419641 100%);    /*background: linear-gradient(to top, rgba(0,255,0,0.2), rgba(0,255,0,1));*/
+      }
+
+      .dropzone .dz-preview .dz-progress {
+        z-index: 9;
+      }
+      .dropzone .dz-preview:hover {
+        z-index: 9;
+      }
+      .dropzone .dz-preview .dz-details {
+        z-index: 9;
+      }
+      .dropzone .dz-preview .dz-image {
+        z-index: 9;
+      }
+      .dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark {
+        z-index: 9;
+      }
+      .dropzone .dz-preview .dz-error-message {
+        z-index: 9;
+      }
+    </style>
+
     <link rel="stylesheet" href="../dropzone/dist/dropzone.css">
 
     <div class='vertical layout'>
@@ -75,12 +83,12 @@ Element providing solution to no problem in particular.
         </form>
       </div>
       
-      <div class='horizontal layout center-justified' hidden$='{{hideProgressBar}}'>
+      <div class='horizontal layout center-justified' hidden$='[[hideProgressBar]]'>
         <paper-progress id='totalProgress' value="0"></paper-progress>
       </div>
 
-      <div class='horizontal center-justified layout'>
-        <paper-button id="submitAllBtn" hidden$='{{autoProcess}}' raised role='button' tabindex='0'>
+      <div class='horizontal center-justified layout' hidden$="[[hideActionButtons]]">
+        <paper-button id="submitAllBtn" hidden$='[[autoProcess]]' raised role='button' tabindex='0'>
           Upload&nbsp;
           <iron-icon icon="file-upload"></iron-icon>
         </paper-button>
@@ -139,9 +147,20 @@ Element providing solution to no problem in particular.
         */
         hideProgressBar: {
           type: Boolean,
-          reflectToAttributes: true,
+          reflectToAttribute: true,
           value: false
         },
+
+
+        hideActionButtons: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false
+        },
+
+        configOverride: {
+          type: Object
+        }
 
       },
 
@@ -158,11 +177,22 @@ Element providing solution to no problem in particular.
         this.createDropzone();
       },
 
+      overrideConfiguration: function() {
+        if (this.configOverride) {
+          this.dropzoneConfiguration = _.deepExtend(this.dropzoneConfiguration, this.configOverride);
+        }
+      },
+
       createDropzone: function() {
         // set the options for element with id 'dropitDropzoneId'
         Dropzone.autoDiscover = false;
-        var dropzoneOptions = this.createDropzoneOptions();
-        new Dropzone(this.$.dropitDropzoneId, dropzoneOptions);
+        this.dropzoneConfiguration = this.createDropzoneOptions();
+        this.overrideConfiguration();
+        new Dropzone(this.$.dropitDropzoneId, this.dropzoneConfiguration);
+      },
+
+      initialize: function() {
+
       },
 
       createDropzoneOptions: function() {
@@ -177,6 +207,7 @@ Element providing solution to no problem in particular.
           // The setting up of the dropzone
           init: function() {
             var dropit = this;
+            self.dropitInstance = dropit;
 
             // First change the button to actually tell Dropzone to process the queue.
             self.$.submitAllBtn.addEventListener("click", function(e) {

@@ -9,11 +9,15 @@
   "main": "base-dropzone.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0",
+    "dropzone": "~4.0.1",
+
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0",
     "iron-component-page": "PolymerElements/iron-component-page#^1.0",
+    
     "paper-button": "PolymerElements/paper-button#^1.0",
     "paper-progress": "PolymerElements/paper-progress#^1.0",
-    "dropzone": "~4.0.1"
+    
+    "psi-external-deps" : "master"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^3.3"
